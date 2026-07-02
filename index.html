@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>mdメモ帳</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/highlight-theme.css">
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="logo">
+      <svg class="logo-icon" viewBox="0 0 24 24" width="28" height="28">
+        <path d="M3 3h18v18H3V3zm2 2v14h14V5H5zm2 2h10v2H7V7zm0 4h10v2H7v-2zm0 4h7v2H7v-2z" fill="currentColor"/>
+      </svg>
+      <span class="logo-text">mdメモ帳</span>
+    </div>
+    <div class="header-actions">
+      <button id="sidebar-toggle" class="btn-icon" title="サイドバー切替">
+        <svg viewBox="0 0 24 24" width="18" height="18">
+          <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" fill="currentColor"/>
+        </svg>
+      </button>
+      <div class="theme-group">
+        <label>エディタ</label>
+        <select id="editor-theme-select"></select>
+      </div>
+      <div class="theme-group">
+        <label>プレビュー</label>
+        <select id="preview-theme-select"></select>
+      </div>
+      <div id="export-wrapper" class="export-wrapper">
+        <button id="export-btn" class="btn-glow" title="エクスポート">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z" fill="currentColor"/></svg>
+          エクスポート
+        </button>
+        <div id="export-dropdown" class="export-dropdown" style="display:none">
+          <button data-export="md">Markdown (.md)</button>
+          <button data-export="pdf">PDF (.pdf)</button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div id="workspace">
+    <aside id="sidebar" class="open">
+      <div class="sidebar-header">
+        <h3>メモ一覧</h3>
+        <div class="sidebar-actions">
+          <button id="new-note-btn" class="sidebar-btn" title="新規メモ">
+            <svg viewBox="0 0 24 24" width="14" height="14"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor"/></svg>
+          </button>
+          <button id="new-folder-btn" class="sidebar-btn" title="新規フォルダ">
+            <svg viewBox="0 0 24 24" width="14" height="14"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 12H4V8h16v10z" fill="currentColor"/></svg>
+          </button>
+        </div>
+      </div>
+      <div id="sidebar-tree"></div>
+      <div class="sidebar-footer">
+        <button id="sidebar-toggle-bottom" class="sidebar-toggle-btn" title="サイドバーを閉じる">
+          <svg viewBox="0 0 24 24" width="16" height="16">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" fill="currentColor"/>
+          </svg>
+          <span>折りたたむ</span>
+        </button>
+      </div>
+    </aside>
+    <div id="content-area">
+      <nav id="toolbar">
+        <button data-cmd="bold" title="太字 (Ctrl+B)"><strong>B</strong></button>
+        <button data-cmd="italic" title="斜体 (Ctrl+I)"><em>I</em></button>
+        <button data-cmd="strike" title="取り消し線"><s>S</s></button>
+        <span class="sep"></span>
+        <button data-cmd="h1" title="見出し1">H₁</button>
+        <button data-cmd="h2" title="見出し2">H₂</button>
+        <button data-cmd="h3" title="見出し3">H₃</button>
+        <span class="sep"></span>
+        <button data-cmd="code" title="インラインコード">&lt;/&gt;</button>
+        <button data-cmd="codeblock" title="コードブロック">&lt;/&gt;▮</button>
+        <button data-cmd="link" title="リンク (Ctrl+K)">
+          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z" fill="currentColor"/></svg>
+        </button>
+        <button data-cmd="image" title="画像">
+          <svg viewBox="0 0 24 24" width="14" height="14"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" fill="currentColor"/></svg>
+        </button>
+        <span class="sep"></span>
+        <button data-cmd="blockquote" title="引用">❝</button>
+        <button data-cmd="ul" title="箇条書き">≡</button>
+        <button data-cmd="ol" title="番号付きリスト">#</button>
+        <button data-cmd="hr" title="水平線">―</button>
+        <span class="sep"></span>
+        <button id="layout-toggle" title="レイアウト切替">
+          <svg id="layout-icon" viewBox="0 0 24 24" width="16" height="16"><path d="M3 5v14h18V5H3zm8 12H5v-4h6v4zm0-6H5V7h6v4zm8 6h-6v-4h6v4zm0-6h-6V7h6v4z" fill="currentColor"/></svg>
+        </button>
+      </nav>
+      <div id="main-container" style="--split-ratio: 50%">
+        <div id="editor-panel">
+          <input type="text" id="note-title" class="note-title-input" placeholder="無題">
+          <textarea id="editor" spellcheck="false" placeholder="# mdメモ帳&#10;&#10;Markdownでメモを書いてください..."></textarea>
+          <div class="panel-label">エディタ</div>
+        </div>
+        <div id="divider"><div class="divider-handle"></div></div>
+        <div id="preview-panel">
+          <div id="preview"></div>
+          <div class="panel-label">プレビュー</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer id="status-bar">
+    <span id="char-count">0 文字</span>
+    <span class="stat-sep">|</span>
+    <span id="line-count">1 行</span>
+    <span class="stat-sep">|</span>
+    <span id="word-count">0 単語</span>
+  </footer>
+</div>
+<div id="context-menu" class="context-menu" style="display:none"></div>
+<script src="lib/marked.min.js"></script>
+<script src="lib/highlight.min.js"></script>
+<script src="lib/html2canvas.min.js"></script>
+<script src="lib/jspdf.umd.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
