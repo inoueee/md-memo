@@ -1162,19 +1162,16 @@ header {
 #ad-header {
   width: 100%;
   min-height: 90px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 10px 0;
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
 }
 
 #ad-sidebar {
   width: 100%;
   min-height: 250px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  padding: 10px;
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);

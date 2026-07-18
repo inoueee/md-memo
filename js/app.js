@@ -9,24 +9,24 @@
     var config = window.APP_CONFIG;
     if (!config || !config.ads || !config.ads.enabled) return;
 
-    var adsbygoogle = window.adsbygoogle || [];
-
     // ヘッダー下の広告
     var headerContainer = document.getElementById('ad-header');
     if (headerContainer && config.ads.header) {
       var ins = document.createElement('ins');
       ins.className = 'adsbygoogle';
-      ins.style.display = 'block';
+      ins.style.display = 'inline-block';
+      ins.style.width = '100%';
+      ins.style.minHeight = '90px';
+      ins.setAttribute('data-ad-client', 'ca-pub-' + config.ads.publisherId);
+      ins.setAttribute('data-ad-slot', config.ads.header.slot);
       if (config.ads.header.format) {
         ins.setAttribute('data-ad-format', config.ads.header.format);
       }
       if (config.ads.header.responsive) {
         ins.setAttribute('data-full-width-responsive', 'true');
       }
-      ins.setAttribute('data-ad-client', 'ca-pub-' + config.ads.publisherId);
-      ins.setAttribute('data-ad-slot', config.ads.header.slot);
       headerContainer.appendChild(ins);
-      try { adsbygoogle.push({}); } catch (e) {}
+      (adsbygoogle = window.adsbygoogle || []).push({});
     }
 
     // サイドバー内の広告
@@ -34,17 +34,19 @@
     if (sidebarContainer && config.ads.sidebar) {
       var ins2 = document.createElement('ins');
       ins2.className = 'adsbygoogle';
-      ins2.style.display = 'block';
+      ins2.style.display = 'inline-block';
+      ins2.style.width = '100%';
+      ins2.style.minHeight = '250px';
+      ins2.setAttribute('data-ad-client', 'ca-pub-' + config.ads.publisherId);
+      ins2.setAttribute('data-ad-slot', config.ads.sidebar.slot);
       if (config.ads.sidebar.format) {
         ins2.setAttribute('data-ad-format', config.ads.sidebar.format);
       }
       if (config.ads.sidebar.responsive) {
         ins2.setAttribute('data-full-width-responsive', 'true');
       }
-      ins2.setAttribute('data-ad-client', 'ca-pub-' + config.ads.publisherId);
-      ins2.setAttribute('data-ad-slot', config.ads.sidebar.slot);
       sidebarContainer.appendChild(ins2);
-      try { adsbygoogle.push({}); } catch (e) {}
+      (adsbygoogle = window.adsbygoogle || []).push({});
     }
   }
 
