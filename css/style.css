@@ -1157,3 +1157,39 @@ header {
     padding: 0 !important;
   }
 }
+
+/* --- Ad containers --- */
+#ad-header {
+  width: 100%;
+  min-height: 90px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+#ad-sidebar {
+  width: 100%;
+  min-height: 250px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  margin: 4px 0;
+}
+
+#ad-header:empty,
+#ad-sidebar:empty {
+  display: none;
+}
+
+/* Print 時に広告を非表示 */
+@media print {
+  #ad-header,
+  #ad-sidebar {
+    display: none !important;
+  }
+}

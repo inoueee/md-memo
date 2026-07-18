@@ -1,6 +1,65 @@
 (function () {
   'use strict';
 
+  // ============================================================
+  // ADS MANAGEMENT
+  // ============================================================
+
+  function initAds() {
+    var config = window.APP_CONFIG;
+    if (!config || !config.ads || !config.ads.enabled) return;
+
+    var adsbygoogle = window.adsbygoogle || [];
+
+    // ヘッダー下の広告
+    var headerContainer = document.getElementById('ad-header');
+    if (headerContainer && config.ads.header) {
+      var ins = document.createElement('ins');
+      ins.className = 'adsbygoogle';
+      ins.style.display = 'block';
+      if (config.ads.header.format) {
+        ins.setAttribute('data-ad-format', config.ads.header.format);
+      }
+      if (config.ads.header.responsive) {
+        ins.setAttribute('data-full-width-responsive', 'true');
+      }
+      ins.setAttribute('data-ad-client', 'ca-pub-' + config.ads.publisherId);
+      ins.setAttribute('data-ad-slot', config.ads.header.slot);
+      headerContainer.appendChild(ins);
+      try { adsbygoogle.push({}); } catch (e) {}
+    }
+
+    // サイドバー内の広告
+    var sidebarContainer = document.getElementById('ad-sidebar');
+    if (sidebarContainer && config.ads.sidebar) {
+      var ins2 = document.createElement('ins');
+      ins2.className = 'adsbygoogle';
+      ins2.style.display = 'block';
+      if (config.ads.sidebar.format) {
+        ins2.setAttribute('data-ad-format', config.ads.sidebar.format);
+      }
+      if (config.ads.sidebar.responsive) {
+        ins2.setAttribute('data-full-width-responsive', 'true');
+      }
+      ins2.setAttribute('data-ad-client', 'ca-pub-' + config.ads.publisherId);
+      ins2.setAttribute('data-ad-slot', config.ads.sidebar.slot);
+      sidebarContainer.appendChild(ins2);
+      try { adsbygoogle.push({}); } catch (e) {}
+    }
+  }
+
+  // AdSenseスクリプトを読み込む
+  function loadAdSense() {
+    var config = window.APP_CONFIG;
+    if (!config || !config.ads || !config.ads.enabled || !config.ads.publisherId) return;
+
+    var s = document.createElement('script');
+    s.async = true;
+    s.crossOrigin = 'anonymous';
+    s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-' + config.ads.publisherId;
+    document.head.appendChild(s);
+  }
+
   const editor = document.getElementById('editor');
   const preview = document.getElementById('preview');
   const divider = document.getElementById('divider');
@@ -1177,5 +1236,9 @@
 
   // Start the note system
   initNotes();
+
+  // Start ads
+  loadAdSense();
+  initAds();
 
 })();

@@ -6,6 +6,22 @@
 <title>mdメモ帳</title>
 <link rel="stylesheet" href="css/style.css">
 <link rel="stylesheet" href="css/highlight-theme.css">
+<script>
+  /* config.js を読み込み、GAスニペットを挿入 */
+  document.write('<script src="config.js"><\/script>');
+  document.write('<script>' +
+    'if(window.APP_CONFIG && APP_CONFIG.analytics && APP_CONFIG.analytics.enabled && APP_CONFIG.analytics.measurementId) {' +
+      'var s=document.createElement("script");' +
+      's.async=true;' +
+      's.src="https://www.googletagmanager.com/gtag/js?id="+APP_CONFIG.analytics.measurementId;' +
+      'document.head.appendChild(s);' +
+      'window.dataLayer=window.dataLayer||[];' +
+      'function gtag(){dataLayer.push(arguments);}' +
+      'gtag("js",new Date());' +
+      'gtag("config",APP_CONFIG.analytics.measurementId);' +
+    '}' +
+  '<\/script>');
+</script>
 </head>
 <body>
 <div id="app">
@@ -42,6 +58,7 @@
       </div>
     </div>
   </header>
+  <div id="ad-header"></div>
   <div id="workspace">
     <aside id="sidebar" class="open">
       <div class="sidebar-header">
@@ -56,6 +73,7 @@
         </div>
       </div>
       <div id="sidebar-tree"></div>
+      <div id="ad-sidebar"></div>
       <div class="sidebar-footer">
         <button id="sidebar-toggle-bottom" class="sidebar-toggle-btn" title="サイドバーを閉じる">
           <svg viewBox="0 0 24 24" width="16" height="16">
@@ -120,6 +138,7 @@
 <script src="lib/highlight.min.js"></script>
 <script src="lib/html2canvas.min.js"></script>
 <script src="lib/jspdf.umd.min.js"></script>
+<script src="config.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>
