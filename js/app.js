@@ -48,7 +48,7 @@
     }
   }
 
-  // AdSenseスクリプトを読み込む
+  // AdSenseスクリプトを読み込み、完了後に広告を初期化
   function loadAdSense() {
     var config = window.APP_CONFIG;
     if (!config || !config.ads || !config.ads.enabled || !config.ads.publisherId) return;
@@ -57,6 +57,12 @@
     s.async = true;
     s.crossOrigin = 'anonymous';
     s.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-' + config.ads.publisherId;
+    s.onload = function () {
+      initAds();
+    };
+    s.onerror = function () {
+      console.error('AdSense script failed to load');
+    };
     document.head.appendChild(s);
   }
 
@@ -1237,8 +1243,7 @@
   // Start the note system
   initNotes();
 
-  // Start ads
+  // Start ads (initAds is called after script loads)
   loadAdSense();
-  initAds();
 
 })();
