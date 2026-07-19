@@ -1165,17 +1165,16 @@ header {
   padding: 10px 0;
   background: var(--bg-secondary);
   border-bottom: 1px solid var(--border-subtle);
-  flex-shrink: 0;
+  flex: 0 0 auto;
 }
 
 #ad-sidebar {
   width: 100%;
-  min-height: 250px;
   padding: 10px;
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
-  margin: 4px 0;
+  flex: 0 0 auto;
 }
 
 #ad-header:empty,
