@@ -7,7 +7,7 @@
 window.APP_CONFIG = {
   ads: {
     /** 広告を表示するかどうか */
-    enabled: true,
+    enabled: false,
 
     /** Google AdSense パブリッシャーID（ca-pub-XXXXXXXXXXXXXXXX の数値部分） */
     publisherId: '0000000000000000',
@@ -35,7 +35,7 @@ window.APP_CONFIG = {
 
   analytics: {
     /** Google Analytics を有効にするかどうか */
-    enabled: true,
+    enabled: false,
     /** Google Analytics 測定ID（G-XXXXXXXXXX） */
     measurementId: 'G-XXXXXXXXXX',
   },
