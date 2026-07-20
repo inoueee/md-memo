@@ -14,6 +14,8 @@ window.APP_CONFIG = {
 
     /** ヘッダー下の広告 */
     header: {
+      /** ヘッダーア広告を表示するかどうか */
+      enabled: true,
       /** Google AdSense スロットID */
       slot: '0000000000',
       /** 広告フォーマット（例: auto, horizontal, vertical, rectangle） */
@@ -24,6 +26,8 @@ window.APP_CONFIG = {
 
     /** サイドバー内の広告 */
     sidebar: {
+      /** サイドバーア広告を表示するかどうか */
+      enabled: true,
       /** Google AdSense スロットID */
       slot: '0000000000',
       /** 広告フォーマット */

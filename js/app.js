@@ -11,7 +11,7 @@
 
     // ヘッダー下の広告
     var headerContainer = document.getElementById('ad-header');
-    if (headerContainer && config.ads.header) {
+    if (headerContainer && config.ads.header && config.ads.header.enabled !== false) {
       var ins = document.createElement('ins');
       ins.className = 'adsbygoogle';
       ins.style.display = 'inline-block';
@@ -31,7 +31,7 @@
 
     // サイドバー内の広告
     var sidebarContainer = document.getElementById('ad-sidebar');
-    if (sidebarContainer && config.ads.sidebar) {
+    if (sidebarContainer && config.ads.sidebar && config.ads.sidebar.enabled !== false) {
       var ins2 = document.createElement('ins');
       ins2.className = 'adsbygoogle';
       ins2.style.display = 'inline-block';
@@ -479,10 +479,12 @@
 
   const NOTES_KEY = 'md-notes-data';
   const ACTIVE_KEY = 'md-notes-active';
+  const ACTIVE_FOLDER_KEY = 'md-notes-active-folder';
   const SIDEBAR_KEY = 'md-sidebar-open';
 
   let notesData = null;
   let activeNoteId = null;
+  let activeFolderId = null;
   let sidebarOpen = true;
   let saveTimeout = null;
 
@@ -731,6 +733,7 @@
 
     if (node.type === 'folder') {
       item.classList.add('tree-folder');
+      if (node.id === activeFolderId) item.classList.add('active');
 
       var toggle = document.createElement('span');
       toggle.className = 'tree-toggle';
@@ -758,15 +761,11 @@
         }
       }
 
-      toggle.addEventListener('click', function (e) {
-        e.stopPropagation();
-        node.expanded = !node.expanded;
-        saveNotes();
-        renderTree();
-      });
-
-      nameSpan.addEventListener('click', function (e) {
-        e.stopPropagation();
+      item.addEventListener('click', function (e) {
+        if (e.target.closest('.tree-actions')) return;
+        if (didDrag) return;
+        activeFolderId = node.id;
+        localStorage.setItem(ACTIVE_FOLDER_KEY, node.id);
         node.expanded = !node.expanded;
         saveNotes();
         renderTree();
@@ -791,6 +790,7 @@
 
       item.addEventListener('click', function (e) {
         if (e.target.closest('.tree-actions') || e.target.closest('.tree-toggle')) return;
+        if (didDrag) return;
         openNote(node.id);
       });
     }
@@ -843,12 +843,19 @@
   // === Drag & Drop ===
 
   var draggedId = null;
+  var didDrag = false;
 
   function setupDragHandlers(item, id) {
     item.draggable = true;
 
+    item.addEventListener('mousedown', function (e) {
+      if (e.button !== 0) return;
+      didDrag = false;
+    });
+
     item.addEventListener('dragstart', function (e) {
       draggedId = id;
+      didDrag = true;
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', id);
       var n = findNode(id, notesData);
@@ -1114,7 +1121,10 @@
     if (newNoteBtn) {
       newNoteBtn.addEventListener('click', function () {
         var parentId = 'root';
-        if (activeNoteId) {
+        if (activeFolderId) {
+          var folder = findNode(activeFolderId, notesData);
+          if (folder && folder.type === 'folder') parentId = folder.id;
+        } else if (activeNoteId) {
           var parent = findParent(activeNoteId, notesData);
           if (parent && parent.type === 'folder') parentId = parent.id;
         }
@@ -1129,7 +1139,15 @@
 
     if (newFolderBtn) {
       newFolderBtn.addEventListener('click', function () {
-        var newFolder = addItem('root', 'folder');
+        var parentId = 'root';
+        if (activeFolderId) {
+          var folder = findNode(activeFolderId, notesData);
+          if (folder && folder.type === 'folder') parentId = folder.id;
+        } else if (activeNoteId) {
+          var parent = findParent(activeNoteId, notesData);
+          if (parent && parent.type === 'folder') parentId = parent.id;
+        }
+        var newFolder = addItem(parentId, 'folder');
         renderTree();
         if (newFolder) startRename(newFolder.id);
       });
@@ -1181,6 +1199,7 @@
     updateToggleIcon();
 
     activeNoteId = localStorage.getItem(ACTIVE_KEY);
+    activeFolderId = localStorage.getItem(ACTIVE_FOLDER_KEY);
 
     if (activeNoteId) {
       var note = findNode(activeNoteId, notesData);
