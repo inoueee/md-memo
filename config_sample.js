@@ -6,9 +6,6 @@
  */
 window.APP_CONFIG = {
   ads: {
-    /** 広告を表示するかどうか */
-    enabled: false,
-
     /** Google AdSense パブリッシャーID（ca-pub-XXXXXXXXXXXXXXXX の数値部分） */
     publisherId: '0000000000000000',
 
@@ -31,7 +28,7 @@ window.APP_CONFIG = {
       /** Google AdSense スロットID */
       slot: '0000000000',
       /** 広告フォーマット */
-      format: 'auto',
+      format: 'rectangle',
       /** レスポンシブにするか */
       responsive: true,
     },
